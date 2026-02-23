@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chain - AD to IDM Mapping</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d0d0d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .slide-container {
+            width: 100%;
+            max-width: 1200px;
+            background: #0d0d0d;
+            padding: 40px 60px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .phase-badge {
+            background: #cc0000;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        
+        h3 {
+            color: #cc0000;
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .diagram-section {
+            background: #1a1a1a;
+            border-radius: 4px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .layer {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .layer:last-child {
+            margin-bottom: 0;
+        }
+        
+        .layer-label {
+            width: 180px;
+            color: #888;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .layer-boxes {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .group-box {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 12px 20px;
+            min-width: 180px;
+            text-align: center;
+        }
+        
+        .group-box.ad {
+            background: #1a3a5c;
+            border-color: #2d5a8a;
+        }
+        
+        .group-box.external {
+            background: #3a2a1a;
+            border-color: #6a4a2a;
+        }
+        
+        .group-box.posix {
+            background: #1a3a2a;
+            border-color: #2a5a4a;
+        }
+        
+        .group-box.rules {
+            background: #cc0000;
+            border-color: #cc0000;
+        }
+        
+        .group-name {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .group-detail {
+            color: #888;
+            font-size: 0.75em;
+            margin-top: 4px;
+        }
+        
+        .group-box.ad .group-detail { color: #6a9acc; }
+        .group-box.external .group-detail { color: #aa8a6a; }
+        .group-box.posix .group-detail { color: #6aaa8a; }
+        .group-box.rules .group-detail { color: rgba(255,255,255,0.7); }
+        
+        .arrow-row {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+        
+        .arrow-spacer {
+            width: 180px;
+        }
+        
+        .arrows {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .arrow-down {
+            width: 180px;
+            text-align: center;
+            color: #666;
+            font-size: 1.5em;
+        }
+        
+        .arrow-label {
+            color: #555;
+            font-size: 0.7em;
+            text-transform: uppercase;
+        }
+        
+        .bottom-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .card {
+            background: #1a1a1a;
+            border-left: 4px solid #cc0000;
+            border-radius: 4px;
+            padding: 20px 25px;
+        }
+        
+        .card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .card li {
+            color: #e0e0e0;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+        
+        .card li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .highlight {
+            color: #cc0000;
+            font-weight: 600;
+        }
+        
+        .success-box {
+            background: #1a1a1a;
+            border: 1px solid #cc0000;
+            border-radius: 4px;
+            padding: 20px 25px;
+        }
+        
+        .success-box h3 {
+            color: #cc0000;
+            margin-bottom: 10px;
+        }
+        
+        .success-box p {
+            color: #b0b0b0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .user-badge {
+            display: inline-block;
+            background: #333;
+            color: #aaa;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <span class="phase-badge">Group Mapping</span>
+            <h1>How AD Groups Connect to IDM Rules</h1>
+        </div>
+
+        <div class="diagram-section">
+            <!-- AD Groups Layer -->
+            <div class="layer">
+                <div class="layer-label">Active Directory</div>
+                <div class="layer-boxes">
+                    <div class="group-box ad">
+                        <div class="group-name">Linux_L1_Team</div>
+                        <div class="group-detail">AD Security Group</div>
+                        <div class="user-badge">john.l1</div>
+                    </div>
+                    <div class="group-box ad">
+                        <div class="group-name">Linux_L2_Team</div>
+                        <div class="group-detail">AD Security Group</div>
+                        <div class="user-badge">jane.l2</div>
+                    </div>
+                    <div class="group-box ad">
+                        <div class="group-name">Linux_L3_Team</div>
+                        <div class="group-detail">AD Security Group</div>
+                        <div class="user-badge">mike.l3</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="arrow-row">
+                <div class="arrow-spacer"></div>
+                <div class="arrows">
+                    <div class="arrow-down">↓<div class="arrow-label">referenced by</div></div>
+                    <div class="arrow-down">↓<div class="arrow-label">referenced by</div></div>
+                    <div class="arrow-down">↓<div class="arrow-label">referenced by</div></div>
+                </div>
+            </div>
+            
+            <!-- External Groups Layer -->
+            <div class="layer">
+                <div class="layer-label">IDM External Groups</div>
+                <div class="layer-boxes">
+                    <div class="group-box external">
+                        <div class="group-name">ad_linux_l1_team</div>
+                        <div class="group-detail">No GID - SID Reference</div>
+                    </div>
+                    <div class="group-box external">
+                        <div class="group-name">ad_linux_l2_team</div>
+                        <div class="group-detail">No GID - SID Reference</div>
+                    </div>
+                    <div class="group-box external">
+                        <div class="group-name">ad_linux_l3_team</div>
+                        <div class="group-detail">No GID - SID Reference</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="arrow-row">
+                <div class="arrow-spacer"></div>
+                <div class="arrows">
+                    <div class="arrow-down">↓<div class="arrow-label">member of</div></div>
+                    <div class="arrow-down">↓<div class="arrow-label">member of</div></div>
+                    <div class="arrow-down">↓<div class="arrow-label">member of</div></div>
+                </div>
+            </div>
+            
+            <!-- POSIX Groups Layer -->
+            <div class="layer">
+                <div class="layer-label">IDM POSIX Groups</div>
+                <div class="layer-boxes">
+                    <div class="group-box posix">
+                        <div class="group-name">linux_l1_operators</div>
+                        <div class="group-detail">GID: 989400004</div>
+                    </div>
+                    <div class="group-box posix">
+                        <div class="group-name">linux_l2_admins</div>
+                        <div class="group-detail">GID: 989400005</div>
+                    </div>
+                    <div class="group-box posix">
+                        <div class="group-name">linux_l3_superadmins</div>
+                        <div class="group-detail">GID: 989400006</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="arrow-row">
+                <div class="arrow-spacer"></div>
+                <div class="arrows">
+                    <div class="arrow-down">↓<div class="arrow-label">used in</div></div>
+                    <div class="arrow-down">↓<div class="arrow-label">used in</div></div>
+                    <div class="arrow-down">↓<div class="arrow-label">used in</div></div>
+                </div>
+            </div>
+            
+            <!-- Rules Layer -->
+            <div class="layer">
+                <div class="layer-label">IDM Rules</div>
+                <div class="layer-boxes">
+                    <div class="group-box rules">
+                        <div class="group-name">HBAC + Sudo Rules</div>
+                        <div class="group-detail">View Only Access</div>
+                    </div>
+                    <div class="group-box rules">
+                        <div class="group-name">HBAC + Sudo Rules</div>
+                        <div class="group-detail">Service Restart</div>
+                    </div>
+                    <div class="group-box rules">
+                        <div class="group-name">HBAC + Sudo Rules</div>
+                        <div class="group-detail">Full Access</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="card">
+                <h3>Why This Chain?</h3>
+                <ul>
+                    <li><span class="highlight">External Groups</span> can only reference AD objects (by SID)</li>
+                    <li><span class="highlight">POSIX Groups</span> have GIDs needed for Linux permissions</li>
+                    <li>HBAC/Sudo rules only work with <span class="highlight">POSIX Groups</span></li>
+                    <li>Chain bridges Windows SIDs to Linux GIDs</li>
+                </ul>
+            </div>
+            
+            <div class="success-box">
+                <h3>Key Benefit</h3>
+                <p>When AD admin adds user to Linux_L1_Team in AD, that user automatically gets L1 access on all Linux servers. No IDM changes needed.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

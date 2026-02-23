@@ -18,7 +18,7 @@ Without Replica:                     With Replica:
 ```
 
 **Why This Matters for Banks:**
-- ✅ **No Single Point of Failure** - Required for RBI compliance
+- ✅ **No Single Point of Failure** - Required for compliance
 - ✅ **Zero Downtime** - Authentication keeps working
 - ✅ **Disaster Recovery** - Data replicated to both servers
 - ✅ **Load Distribution** - 1500 servers can spread load
@@ -531,7 +531,7 @@ After completing this phase, you now understand:
 2. **Bi-directional Replication**: Changes sync both ways
 3. **Client Discovery**: DNS SRV records help clients find servers
 4. **High Availability**: No single point of failure
-5. **Why Banks Need This**: RBI compliance requires no SPOF
+5. **Why Banks Need This**: Compliance requires no SPOF
 
 ---
 

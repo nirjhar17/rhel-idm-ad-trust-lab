@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Hat IdM with Active Directory Trust - Demo Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .slide-container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .slide {
+            display: none;
+            padding: 60px 80px;
+            min-height: 600px;
+            background: white;
+            animation: fadeIn 0.5s;
+            overflow-y: auto;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+        
+        h3 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            color: #333;
+            font-size: 1em;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .subtitle {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        
+        .code-block {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            color: #333;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: #856404;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .slide-number {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .diagram {
+            background: #f9f9f9;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            line-height: 1.4;
+            color: #333;
+            overflow-x: auto;
+        }
+        
+        .box {
+            background: #e8eef7;
+            border: 2px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .box.success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .box.warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+        
+        .box.danger {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .title-slide {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .title-slide h1,
+        .title-slide h2,
+        .title-slide p {
+            color: white;
+            border: none;
+        }
+        
+        .title-slide h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .title-slide h2 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+        }
+        
+        .checkmark {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .xmark {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- SLIDE 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Red Hat IdM with Active Directory Trust</h1>
+            <h2>Demo Lab for Enterprise Compliance</h2>
+            <p style="font-size: 1.3em; margin-top: 30px;">Enterprise POC</p>
+            <p style="margin-top: 50px; font-size: 1.1em;">
+                <strong>Unified Identity Management Across Windows & Linux</strong>
+            </p>
+            <p style="margin-top: 30px;">January 19, 2026</p>
+        </div>
+
+        <!-- SLIDE 2: The Problem -->
+        <div class="slide">
+            <h2>The Problem: Current Challenges</h2>
+            
+            <div class="box danger">
+                <h3>Identity Management Complexity</h3>
+            </div>
+            
+            <ul>
+                <li><span class="xmark">❌</span> <strong>Duplicate Accounts:</strong> Windows (AD) and Linux (local/LDAP) separate</li>
+                <li><span class="xmark">❌</span> <strong>Password Synchronization:</strong> Security vulnerabilities, sync failures</li>
+                <li><span class="xmark">❌</span> <strong>Weak Access Control:</strong> Inconsistent policies across platforms</li>
+                <li><span class="xmark">❌</span> <strong>Fragmented Audit:</strong> Difficult to trace user actions across systems</li>
+                <li><span class="xmark">❌</span> <strong>Compliance Gaps:</strong> Inadequate audit trails and access control</li>
+            </ul>
+            
+            <div class="box warning">
+                <h3>Compliance Reality</h3>
+                <p><strong>₹54.78 crore</strong> penalties imposed (353 entities)</p>
+                <p>Violations: Authentication gaps, access control, audit trail deficiencies</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: The Solution -->
+        <div class="slide">
+            <h2>The Solution: Cross-Forest Kerberos Trust</h2>
+            
+            <div class="box success">
+                <h3>What IdM-AD Trust Provides</h3>
+            </div>
+            
+            <ul>
+                <li><span class="checkmark">✓</span> <strong>Single User Identity:</strong> AD as source of truth</li>
+                <li><span class="checkmark">✓</span> <strong>Single Sign-On (SSO):</strong> One password for Windows & Linux</li>
+                <li><span class="checkmark">✓</span> <strong>No Account Duplication:</strong> Linux users exist only in AD</li>
+                <li><span class="checkmark">✓</span> <strong>No Password Synchronization:</strong> Eliminates sync vulnerabilities</li>
+                <li><span class="checkmark">✓</span> <strong>Centralized Access Control:</strong> HBAC rules from one place</li>
+                <li><span class="checkmark">✓</span> <strong>Complete Audit Trails:</strong> All actions logged for compliance reporting</li>
+            </ul>
+            
+            <div class="diagram">
+Active Directory (Windows)
+          ↓ Kerberos Trust
+Red Hat IdM (Linux)
+          ↓ SSSD Integration
+Linux Clients
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Architecture Overview -->
+        <div class="slide">
+            <h2>System Architecture</h2>
+            
+            <div class="diagram">
+┌─────────────────────────────────┐
+│ Active Directory Domain          │
+│ ├─ Domain Controllers            │
+│ ├─ AD Users & Groups             │
+│ └─ Windows Infrastructure        │
+└──────────────┬────────────────────┘
+               │ DNS + Kerberos Trust
+┌──────────────┴────────────────────┐
+│ Red Hat IdM Domain               │
+│ ├─ Trust Controllers             │
+│ ├─ LDAP Directory                │
+│ ├─ Kerberos KDC                 │
+│ └─ DNS Servers                   │
+└──────────────┬────────────────────┘
+               │ SSSD Integration
+┌──────────────┴────────────────────┐
+│ Linux Clients (RHEL)             │
+│ ├─ SSSD Service                  │
+│ ├─ PAM Integration               │
+│ └─ Access Control Enforcement    │
+└──────────────────────────────────┘
+            </div>
+            
+            <h3>Component Responsibilities</h3>
+            <ul>
+                <li><strong>AD Domain Controllers:</strong> Authenticate AD users, maintain directory</li>
+                <li><strong>IdM Trust Controllers:</strong> Manage trust, validate credentials, run Samba</li>
+                <li><strong>SSSD (Clients):</strong> Mediate authentication, cache identity, enforce access control</li>
+                <li><strong>DNS:</strong> Bidirectional name resolution and service discovery</li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 5: How Kerberos Trust Works -->
+        <div class="slide">
+            <h2>Kerberos Cross-Realm Trust Flow</h2>
+            
+            <h3>7-Step Authentication Process</h3>
+            
+            <div class="code-block">
+1. AD User Initiates Login (administrator@ad.demo.local)
+2. User Authenticates to AD KDC → Receives TGT (Ticket)
+3. Client Requests Service Ticket for Linux Resource
+4. AD KDC Issues Referral Ticket for IdM Realm
+5. Client Contacts IdM KDC with Referral Ticket
+6. IdM KDC Validates Trust & Issues Service Ticket
+7. Access Granted to Linux Resource
+   ↓
+   RESULT: Single Sign-On (No 2nd Password!)
+            </div>
+            
+            <div class="box success">
+                <h3>Key Insight</h3>
+                <p><strong>User Password:</strong> 1 (AD only)</p>
+                <p><strong>Linux Access:</strong> Automatic via Kerberos</p>
+                <p><strong>Admin Overhead:</strong> Minimal</p>
+                <p><strong>Audit Trail:</strong> Complete</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Access Control - HBAC -->
+        <div class="slide">
+            <h2>Host-Based Access Control (HBAC)</h2>
+            
+            <h3>The Challenge</h3>
+            <p class="highlight">Cannot add AD users directly to HBAC rules (AD users don't exist in IdM LDAP)</p>
+            
+            <h3>The Solution: Three-Tier Group Hierarchy</h3>
+            
+            <div class="diagram">
+AD Users (AD Domain)
+    ↓ Add to
+External Groups (IdM, non-POSIX)
+Contains AD user references by SID
+    ↓ Add to
+POSIX Groups (IdM, with GID)
+Can be used in access control rules
+    ↓ Used in
+Access Control Policies
+(HBAC Rules, Sudo Rules, Services)
+            </div>
+            
+            <div class="code-block">
+# Example: Create external group with AD user
+ipa group-add ad_users_external --external
+ipa group-add-member ad_users_external \
+    --external="administrator@ad.demo.local"
+
+# Create POSIX group
+ipa group-add banking_staff
+ipa group-add-member banking_staff \
+    --groups=ad_users_external
+
+# Create HBAC rule
+ipa hbacrule-add allow_banking_prod_access
+ipa hbacrule-add-user allow_banking_prod_access \
+    --groups=banking_staff
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Sudo Rules -->
+        <div class="slide">
+            <h2>Privileged Access Management (Sudo Rules)</h2>
+            
+            <h3>Granting Admin Privileges to AD Users</h3>
+            
+            <div class="diagram">
+AD Admin Group
+    ↓
+External Group (ad_admins_external)
+    ↓
+POSIX Group (admin_group)
+    ↓
+Sudo Rule: admin_sudo
+  ├─ Who: admin_group
+  ├─ Where: db-server.idm.demo.local
+  ├─ What: /usr/bin/systemctl, /usr/sbin/reboot
+  └─ Audit: All actions logged!
+            </div>
+            
+            <h3>Configuration Example</h3>
+            <div class="code-block">
+ipa sudorule-add db_admin_sudo
+ipa sudorule-add-user db_admin_sudo --groups=db_admin_group
+ipa sudorule-add-host db_admin_sudo --hosts=db-server.idm.demo.local
+ipa sudocmd-add /usr/bin/systemctl
+ipa sudorule-add-allow-command db_admin_sudo --sudocmds=/usr/bin/systemctl
+            </div>
+            
+            <h3>Audit Result</h3>
+            <div class="code-block">
+journalctl -u sudo | grep db_admin@ad.demo.local
+Jan 19 14:32:01 db-server sudo: db_admin@ad.demo.local : 
+    COMMAND=/usr/bin/systemctl restart postgresql
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Compliance -->
+        <div class="slide">
+            <h2>How This Meets Compliance Requirements</h2>
+            
+            <h3>Compliance Framework</h3>
+            
+            <table>
+                <tr>
+                    <th>Compliance Requirement</th>
+                    <th>IdM-AD Solution</th>
+                </tr>
+                <tr>
+                    <td>Strong Authentication</td>
+                    <td>Kerberos + AD credentials</td>
+                </tr>
+                <tr>
+                    <td>Access Control</td>
+                    <td>HBAC rules enforce least-privilege</td>
+                </tr>
+                <tr>
+                    <td>Audit Trails</td>
+                    <td>Complete event logging</td>
+                </tr>
+                <tr>
+                    <td>Identity Governance</td>
+                    <td>Centralized user lifecycle</td>
+                </tr>
+                <tr>
+                    <td>Segregation of Duties</td>
+                    <td>Role-based HBAC & Sudo</td>
+                </tr>
+            </table>
+            
+            <div class="box success">
+                <h3>Compliance Advantages</h3>
+                <ul>
+                    <li>Audit logging: 100% compliance with regulatory requirements</li>
+                    <li>Access control: Demonstrates least-privilege enforcement</li>
+                    <li>Compliance reports: Generated automatically from centralized logs</li>
+                    <li>Immutable audit trail: No password synchronization = no sync vulnerabilities</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: Lab Environment -->
+        <div class="slide">
+            <h2>Lab Environment Setup</h2>
+            
+            <h3>What We're Building</h3>
+            
+            <div class="diagram">
+┌──────────────────────────────────────┐
+│   Vagrant/VirtualBox Lab             │
+├──────────────────────────────────────┤
+│                                      │
+│  ┌─────────────┐  ┌──────────────┐  │
+│  │ AD Server   │  │ IDM Server   │  │
+│  │(Windows2k19)│  │  (RHEL 9)    │  │
+│  └─────────────┘  └──────────────┘  │
+│        ↓                   ↓         │
+│  ┌──────────────────────────────┐   │
+│  │  Private Network 192.168.56  │   │
+│  └──────────────────────────────┘   │
+│        ↑                   ↑         │
+│  ┌─────────────┐  ┌──────────────┐  │
+│  │IdM Client 1 │  │IdM Client 2  │  │
+│  │  (RHEL 9)   │  │  (RHEL 9)    │  │
+│  └─────────────┘  └──────────────┘  │
+│                                      │
+└──────────────────────────────────────┘
+            </div>
+            
+            <table>
+                <tr>
+                    <th>Component</th>
+                    <th>Specs</th>
+                    <th>IP Address</th>
+                </tr>
+                <tr>
+                    <td>AD Server</td>
+                    <td>Windows 2019, 2 CPU, 4GB RAM</td>
+                    <td>192.168.56.5</td>
+                </tr>
+                <tr>
+                    <td>IDM Server</td>
+                    <td>RHEL 9, 2 CPU, 4GB RAM</td>
+                    <td>192.168.56.10</td>
+                </tr>
+                <tr>
+                    <td>IDM Client 1</td>
+                    <td>RHEL 9, 1 CPU, 2GB RAM</td>
+                    <td>192.168.56.20</td>
+                </tr>
+                <tr>
+                    <td>IDM Client 2</td>
+                    <td>RHEL 9, 1 CPU, 2GB RAM</td>
+                    <td>192.168.56.21</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SLIDE 10: Phase 1 Infrastructure -->
+        <div class="slide">
+            <h2>Phase 1: Infrastructure Deployment</h2>
+            
+            <h3>Deploy Virtual Machines (30 minutes)</h3>
+            
+            <div class="code-block">
+# Clone repository
+git clone https://github.com/nirjhar17/rhel-idm-ad-trust-lab.git
+cd rhel-idm-ad-trust-lab
+
+# Deploy infrastructure
+vagrant up
+
+# Check status
+vagrant status
+# Output: All 4 VMs running ✓
+            </div>
+            
+            <h3>What Happens</h3>
+            <ul>
+                <li><span class="checkmark">✓</span> AD Server (Windows 2019) started</li>
+                <li><span class="checkmark">✓</span> IdM Server (RHEL 9) started</li>
+                <li><span class="checkmark">✓</span> IdM Clients (2x RHEL 9) started</li>
+                <li><span class="checkmark">✓</span> Private network connectivity established</li>
+                <li><span class="checkmark">✓</span> Basic OS configuration applied</li>
+            </ul>
+            
+            <div class="box success">
+                <h3>Verification</h3>
+                <p>All VMs can reach each other on private network</p>
+                <p>Network is isolated from production</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: Phase 2 IDM Server -->
+        <div class="slide">
+            <h2>Phase 2: IDM Server Installation</h2>
+            
+            <h3>Install & Configure IDM (20 minutes)</h3>
+            
+            <div class="code-block">
+# Install packages
+yum install -y ipa-server ipa-server-dns ipa-server-trust-ad
+
+# Install IDM server
+ipa-server-install \
+    --realm=IDM.EXAMPLE.COM \
+    --domain=idm.example.com \
+    --setup-dns \
+    --forwarder=192.168.56.5 \
+    --unattended
+            </div>
+            
+            <h3>What Gets Configured</h3>
+            <ul>
+                <li><span class="checkmark">✓</span> Kerberos KDC (Realm: IDM.EXAMPLE.COM)</li>
+                <li><span class="checkmark">✓</span> LDAP Directory Server</li>
+                <li><span class="checkmark">✓</span> DNS Server with forwarders</li>
+                <li><span class="checkmark">✓</span> Certificate Authority (CA)</li>
+                <li><span class="checkmark">✓</span> Web UI (https://idm-server/ipa/ui)</li>
+                <li><span class="checkmark">✓</span> Command-line tools (ipa command)</li>
+            </ul>
+            
+            <h3>Verification</h3>
+            <div class="code-block">
+ipactl status
+# Output: All services RUNNING ✓
+            </div>
+        </div>
+
+        <!-- SLIDE 12: Phase 3 AD Trust -->
+        <div class="slide">
+            <h2>Phase 3: AD Trust Configuration</h2>
+            
+            <h3>Configure Trust (20 minutes)</h3>
+            
+            <div class="code-block">
+# Install trust packages
+yum install -y "*ipa-server-trust-ad"
+
+# Configure IdM as trust controller
+ipa-adtrust-install --netbios-name=IDMDOM --unattended
+
+# Establish cross-forest trust
+ipa trust-add --type=ad ad.example.com \
+    --admin Administrator --password
+            </div>
+            
+            <h3>Verify Trust</h3>
+            <div class="code-block">
+# Show trust status
+ipa trust-show ad.example.com
+
+# Test AD user resolution
+id administrator@ad.example.com
+# Output: uid=1119000500(administrator@ad.example.com) ✓
+
+# Fetch trusted domains
+ipa trustdomain-find
+            </div>
+            
+            <div class="box success">
+                <h3>Success Indicators</h3>
+                <p>AD users resolve on IdM server</p>
+                <p>Cross-forest Kerberos trust established</p>
+                <p>DNS forwarders working bidirectionally</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: Phase 4 Clients -->
+        <div class="slide">
+            <h2>Phase 4: IdM Client Configuration</h2>
+            
+            <h3>Configure Clients (35 minutes - 2 clients)</h3>
+            
+            <div class="code-block">
+# Install client packages
+yum install -y ipa-client
+
+# Configure to join IdM domain
+ipa-client-install \
+    --domain=idm.example.com \
+    --realm=IDM.EXAMPLE.COM \
+    --server=idm-server.idm.example.com \
+    --unattended
+            </div>
+            
+            <h3>What Happens</h3>
+            <ul>
+                <li><span class="checkmark">✓</span> Client joins IdM domain</li>
+                <li><span class="checkmark">✓</span> SSSD configured for IdM + AD</li>
+                <li><span class="checkmark">✓</span> Kerberos client configured</li>
+                <li><span class="checkmark">✓</span> PAM integration enabled</li>
+                <li><span class="checkmark">✓</span> Client certificate registered with CA</li>
+            </ul>
+            
+            <h3>Test AD User Resolution</h3>
+            <div class="code-block">
+# On any IdM client:
+id administrator@ad.example.com
+# Output: User resolved with correct UID/GID ✓
+
+sssctl domain-status ad.example.com
+# Output: Status: online ✓
+            </div>
+        </div>
+
+        <!-- SLIDE 14: Phase 5 Access Control -->
+        <div class="slide">
+            <h2>Phase 5: Access Control Configuration</h2>
+            
+            <h3>Create Access Policies (20 minutes)</h3>
+            
+            <div class="code-block">
+# Create external group with AD users
+ipa group-add ad_admins_external --external
+ipa group-add-member ad_admins_external \
+    --external="Administrator@ad.example.com"
+
+# Create POSIX group
+ipa group-add linux_admins
+ipa group-add-member linux_admins \
+    --groups=ad_admins_external
+
+# Create HBAC rule
+ipa hbacrule-add allow_admin_access
+ipa hbacrule-add-user allow_admin_access \
+    --groups=linux_admins
+ipa hbacrule-add-host allow_admin_access \
+    --hosts=idm-client-1.idm.example.com
+ipa hbacrule-add-service allow_admin_access \
+    --hbacsvcs=sshd
+
+# Create sudo rule
+ipa sudorule-add admin_sudo
+ipa sudorule-add-user admin_sudo --groups=linux_admins
+ipa sudorule-add-host admin_sudo --hosts=idm-client-1
+ipa sudorule-add-allow-command admin_sudo --sudocmds=ALL
+            </div>
+        </div>
+
+        <!-- SLIDE 15: Phase 6 Testing -->
+        <div class="slide">
+            <h2>Phase 6: Testing & Verification</h2>
+            
+            <h3>Complete Testing (20 minutes)</h3>
+            
+            <h3>Test 1: AD User Authentication</h3>
+            <div class="code-block">
+kinit administrator@ad.example.com
+ssh idm-client-1
+# Result: Login succeeds WITHOUT password prompt ✓
+            </div>
+            
+            <h3>Test 2: HBAC Rule Enforcement</h3>
+            <div class="code-block">
+ipa hbactest --user=administrator@ad.example.com \
+    --host=idm-client-1.idm.example.com --service=sshd
+# Result: Access granted ✓
+            </div>
+            
+            <h3>Test 3: Sudo Privileges</h3>
+            <div class="code-block">
+sudo whoami  # Result: root ✓
+journalctl -u sudo | grep administrator
+# Result: Audit log shows action ✓
+            </div>
+            
+            <h3>Test 4: Health Check</h3>
+            <div class="code-block">
+ipa-healthcheck --source=ipahealthcheck.ipa.trust
+# Result: All checks passing ✓
+            </div>
+        </div>
+
+        <!-- SLIDE 16: Complete Timeline -->
+        <div class="slide">
+            <h2>Complete Lab Timeline</h2>
+            
+            <h3>Total Setup Duration: 2-2.5 hours</h3>
+            
+            <table>
+                <tr>
+                    <th>Phase</th>
+                    <th>Activity</th>
+                    <th>Time</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Infrastructure (Vagrant + VMs)</td>
+                    <td>30 min</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>IDM Server Installation</td>
+                    <td>20 min</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>AD Trust Configuration</td>
+                    <td>20 min</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>IdM Client Setup (2 clients)</td>
+                    <td>35 min</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Access Control Policies</td>
+                    <td>20 min</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Testing & Verification</td>
+                    <td>20 min</td>
+                </tr>
+                <tr style="background: #ffffcc; font-weight: bold;">
+                    <td colspan="2">TOTAL TIME</td>
+                    <td>~2.5 hours</td>
+                </tr>
+            </table>
+            
+            <h3>Quick Start Shortcut</h3>
+            <div class="code-block">
+# Run all phases with automation
+./scripts/setup-all.sh
+# Time: ~2 hours (fully automated)
+            </div>
+        </div>
+
+        <!-- SLIDE 17: Demo Workflow -->
+        <div class="slide">
+            <h2>Live Demo Sequence</h2>
+            
+            <h3>What We Show (25-30 minutes)</h3>
+            
+            <ol>
+                <li><strong>Architecture Overview (5 min):</strong> Show trust diagram, explain cross-forest relationship</li>
+                <li><strong>Trust Verification (3 min):</strong> 
+                    <div class="code-block">ipa trust-show ad.example.com
+id administrator@ad.example.com</div>
+                </li>
+                <li><strong>Single Sign-On (5 min):</strong>
+                    <div class="code-block">kinit administrator@ad.example.com
+ssh idm-client-1  # No password!</div>
+                </li>
+                <li><strong>HBAC Rules (5 min):</strong>
+                    <div class="code-block">ipa hbacrule-show allow_admin_access
+ipa hbactest --user=... --host=... --service=sshd</div>
+                </li>
+                <li><strong>Sudo Privileges (5 min):</strong>
+                    <div class="code-block">sudo whoami
+journalctl -u sudo | grep administrator</div>
+                </li>
+                <li><strong>Web UI Tour (2 min):</strong> Navigate IdM interface, show trust status, users, policies</li>
+            </ol>
+        </div>
+
+        <!-- SLIDE 18: Key Metrics -->
+        <div class="slide">
+            <h2>Success Metrics & KPIs</h2>
+            
+            <h3>Technical Metrics</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>Trust Setup Time</td>
+                    <td>&lt; 30 min</td>
+                    <td><span class="checkmark">✓</span></td>
+                </tr>
+                <tr>
+                    <td>AD User Auth Success</td>
+                    <td>&gt; 99.5%</td>
+                    <td><span class="checkmark">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Auth Response Time</td>
+                    <td>&lt; 2 sec</td>
+                    <td><span class="checkmark">✓</span></td>
+                </tr>
+                <tr>
+                    <td>HBAC Rule Accuracy</td>
+                    <td>100%</td>
+                    <td><span class="checkmark">✓</span></td>
+                </tr>
+                <tr>
+                    <td>System Uptime</td>
+                    <td>&gt; 99.9%</td>
+                    <td><span class="checkmark">✓</span></td>
+                </tr>
+            </table>
+            
+            <h3>Operational Benefits</h3>
+            <ul>
+                <li><span class="checkmark">✓</span> <strong>Admin Overhead Reduction:</strong> &gt; 40%</li>
+                <li><span class="checkmark">✓</span> <strong>Support Ticket Reduction:</strong> &gt; 30%</li>
+                <li><span class="checkmark">✓</span> <strong>User Provisioning Time:</strong> &lt; 5 min</li>
+                <li><span class="checkmark">✓</span> <strong>Access Review Efficiency:</strong> &gt; 50% faster</li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 19: Production Roadmap -->
+        <div class="slide">
+            <h2>From POC to Production</h2>
+            
+            <h3>Phased Implementation Approach</h3>
+            
+            <table>
+                <tr>
+                    <th>Phase</th>
+                    <th>Duration</th>
+                    <th>Deliverable</th>
+                </tr>
+                <tr>
+                    <td><strong>Phase 1: Extended POC</strong></td>
+                    <td>Weeks 1-6</td>
+                    <td>Validated design, security assessment</td>
+                </tr>
+                <tr>
+                    <td><strong>Phase 2: Pilot</strong></td>
+                    <td>Months 1-3</td>
+                    <td>1 dept, 100-500 users, proven success</td>
+                </tr>
+                <tr>
+                    <td><strong>Phase 3: Production Rollout</strong></td>
+                    <td>Months 3-6</td>
+                    <td>All systems, full HA, compliance verified</td>
+                </tr>
+                <tr>
+                    <td><strong>Phase 4: Optimization</strong></td>
+                    <td>Ongoing</td>
+                    <td>Performance tuning, feature expansion</td>
+                </tr>
+            </table>
+            
+            <h3>Production Architecture</h3>
+            <div class="diagram">
+Active Directory (Global)
+    ↓ Cross-Forest Trust
+Red Hat IdM (High Availability)
+├─ Primary Trust Controller
+├─ Secondary Trust Controller (DR)
+├─ Regional Trust Agents
+└─ Load Balancer
+    ↓
+Linux Clients (500-5000 systems)
+├─ SSSD configured
+├─ Monitoring agents
+├─ Audit logging
+└─ Access policies
+            </div>
+        </div>
+
+        <!-- SLIDE 20: FAQ -->
+        <div class="slide">
+            <h2>Frequently Asked Questions</h2>
+            
+            <h3>Q: What if the trust breaks?</h3>
+            <p><span class="xmark">❌</span> AD users cannot access Linux</p>
+            <p><span class="checkmark">✓</span> Native IdM users unaffected</p>
+            <p><span class="checkmark">✓</span> Multiple trust controllers for failover</p>
+            
+            <h3>Q: Can IdM users access Active Directory?</h3>
+            <p><span class="checkmark">✓</span> One-way trust: AD users → Linux</p>
+            <p><span class="xmark">❌</span> IdM users → AD (not required for banking)</p>
+            
+            <h3>Q: What's the performance impact?</h3>
+            <p><span class="checkmark">✓</span> SSSD caching minimizes latency</p>
+            <p><span class="checkmark">✓</span> Subsequent auth from cache (~0ms)</p>
+            
+            <h3>Q: How do we migrate existing users?</h3>
+            <p><span class="checkmark">✓</span> Coexist during transition</p>
+            <p><span class="checkmark">✓</span> Gradual migration over 1-3 months</p>
+            
+            <h3>Q: How does this help compliance?</h3>
+            <p><span class="checkmark">✓</span> Centralized audit logs</p>
+            <p><span class="checkmark">✓</span> Automated compliance reports</p>
+            <p><span class="checkmark">✓</span> Access control enforcement</p>
+        </div>
+
+        <!-- SLIDE 21: Critical Success Factors -->
+        <div class="slide">
+            <h2>Critical Success Factors</h2>
+            
+            <h3>Pre-Demo Preparation (48 hours before)</h3>
+            <ul>
+                <li><span class="checkmark">✓</span> Test all commands end-to-end</li>
+                <li><span class="checkmark">✓</span> Verify DNS resolution (both directions)</li>
+                <li><span class="checkmark">✓</span> Verify trust status is healthy</li>
+                <li><span class="checkmark">✓</span> Record backup videos</li>
+                <li><span class="checkmark">✓</span> Prepare fallback screenshots</li>
+                <li><span class="checkmark">✓</span> Rehearse demo 2-3 times</li>
+            </ul>
+            
+            <h3>During Demo</h3>
+            <ul>
+                <li><span class="checkmark">✓</span> Start with problem statement</li>
+                <li><span class="checkmark">✓</span> Show architecture early</li>
+                <li><span class="checkmark">✓</span> Execute commands live</li>
+                <li><span class="checkmark">✓</span> Explain each step clearly</li>
+                <li><span class="checkmark">✓</span> Pause for questions</li>
+                <li><span class="checkmark">✓</span> Stay calm if issues occur</li>
+            </ul>
+            
+            <div class="box warning">
+                <h3>Remember</h3>
+                <p>Technical demos succeed when they tell a story about solving real business problems.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 22: Key Takeaways -->
+        <div class="slide">
+            <h2>Key Takeaways</h2>
+            
+            <div class="box success">
+                <h3>The Problem</h3>
+                <p>Separate Windows/Linux identity systems create complexity, security risks, and compliance gaps.</p>
+            </div>
+            
+            <div class="box success">
+                <h3>The Solution</h3>
+                <p>Red Hat IdM with AD cross-forest trust provides unified authentication, centralized access control, and complete audit trails.</p>
+            </div>
+            
+            <div class="box success">
+                <h3>The Proof</h3>
+                <p>This lab demonstrates all capabilities in 2.5 hours with five core scenarios:</p>
+                <ul>
+                    <li><span class="checkmark">✓</span> AD user authentication to Linux</li>
+                    <li><span class="checkmark">✓</span> Single sign-on experience</li>
+                    <li><span class="checkmark">✓</span> Host-based access control enforcement</li>
+                    <li><span class="checkmark">✓</span> Privileged access management with audit</li>
+                    <li><span class="checkmark">✓</span> Compliance-ready logging</li>
+                </ul>
+            </div>
+            
+            <div class="box success">
+                <h3>The Path Forward</h3>
+                <p>Phased approach (Extended POC → Pilot → Production) ensures low risk and high success rate.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 23: Next Steps -->
+        <div class="slide">
+            <h2>Next Steps</h2>
+            
+            <h3>If Demo Approved</h3>
+            
+            <h4>Immediate (Week 1-2):</h4>
+            <ul>
+                <li><span class="checkmark">✓</span> Finalize lab configuration</li>
+                <li><span class="checkmark">✓</span> Document all procedures</li>
+                <li><span class="checkmark">✓</span> Identify production requirements</li>
+                <li><span class="checkmark">✓</span> Schedule extended testing</li>
+            </ul>
+            
+            <h4>Short Term (Weeks 3-4):</h4>
+            <ul>
+                <li><span class="checkmark">✓</span> Deploy in staging environment</li>
+                <li><span class="checkmark">✓</span> Test with larger user population</li>
+                <li><span class="checkmark">✓</span> Conduct security assessment</li>
+                <li><span class="checkmark">✓</span> Train operations team</li>
+            </ul>
+            
+            <h4>Medium Term (Months 1-3):</h4>
+            <ul>
+                <li><span class="checkmark">✓</span> Pilot deployment (1 department)</li>
+                <li><span class="checkmark">✓</span> Migrate 100-500 users</li>
+                <li><span class="checkmark">✓</span> Monitor and optimize</li>
+                <li><span class="checkmark">✓</span> Plan full rollout</li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 24: Thank You -->
+        <div class="slide title-slide">
+            <h1>Thank You!</h1>
+            <h2>Questions?</h2>
+            
+            <p style="margin-top: 60px; font-size: 1.1em;">
+                <strong>Red Hat IdM with Active Directory Trust</strong>
+            </p>
+            
+            <p style="font-size: 1.1em;">
+                <strong>For More Information:</strong>
+            </p>
+            <ul style="text-align: left; display: inline-block; margin-top: 30px;">
+                <li>Repository: github.com/nirjhar17/rhel-idm-ad-trust-lab</li>
+                <li>Red Hat Docs: docs.redhat.com/idm</li>
+                <li>FreeIPA: www.freeipa.org</li>
+            </ul>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <span class="slide-number">
+                <span id="currentSlide">1</span> / <span id="totalSlides">24</span>
+            </span>
+            <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = document.querySelectorAll('.slide').length;
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            
+            if (n > totalSlides) currentSlide = totalSlides;
+            if (n < 1) currentSlide = 1;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

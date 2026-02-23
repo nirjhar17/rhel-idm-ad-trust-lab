@@ -2,7 +2,7 @@
 
 ## 🎯 What Are We Doing in This Phase?
 
-This is the **final phase** - we're validating everything works and preparing demo scenarios for Indusind Bank!
+This is the **final phase** - we're validating everything works and preparing demo scenarios!
 
 **Goals:**
 - ✅ Verify all components are working
@@ -122,7 +122,7 @@ id
 - ✅ "Each admin has their own account"
 - ✅ "Home directory created automatically"
 - ✅ "This is john.l1 - we know exactly who logged in"
-- ✅ "RBI audit requirement: Individual accountability - CHECK!"
+- ✅ "Audit requirement: Individual accountability - CHECK!"
 
 ---
 
@@ -320,7 +320,7 @@ Jan 06 10:15:45 sudo: john.l1@ad.demo.local : COMMAND=/usr/bin/cat /var/log/mess
 ### Key Points for Demo
 - ✅ "Every login is tracked with individual username"
 - ✅ "Every sudo command shows who ran it"
-- ✅ "RBI audit: We can trace any action to a specific person"
+- ✅ "Audit: We can trace any action to a specific person"
 - ✅ "No more 'who deleted that file?' mystery"
 
 ---
@@ -367,7 +367,7 @@ sudo ipactl status         # All RUNNING again
 - ✅ "We stopped the primary IDM server completely"
 - ✅ "Authentication kept working via the replica"
 - ✅ "Zero downtime for users"
-- ✅ "RBI requirement: No single point of failure - CHECK!"
+- ✅ "Compliance requirement: No single point of failure - CHECK!"
 
 ---
 
@@ -389,7 +389,7 @@ sudo ipactl status         # All RUNNING again
 ## 🎤 Demo Script (5-Minute Version)
 
 ### Intro (30 seconds)
-"Let me show you how Red Hat IDM with AD Trust solves your RBI compliance requirements."
+"Let me show you how Red Hat IDM with AD Trust solves your compliance requirements."
 
 ### Demo 1: Trust (30 seconds)
 "First, notice that AD users are visible in IDM without password sync."
@@ -484,12 +484,12 @@ tail -f /var/log/secure
 You've successfully built and validated a complete IDM + AD Trust demo lab!
 
 This demonstrates:
-- ✅ Individual accountability (RBI compliance)
+- ✅ Individual accountability (compliance)
 - ✅ Role-based access control (L1/L2/L3)
 - ✅ Host-based access control
 - ✅ High availability
 - ✅ Integration with existing AD
 - ✅ Centralized management
 
-**Ready for the Indusind Bank demo! 🚀**
+**Ready for the demo! 🚀**
 

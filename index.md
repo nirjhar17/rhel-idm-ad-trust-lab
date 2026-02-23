@@ -8,7 +8,7 @@ Welcome to the documentation and resources for implementing Red Hat Identity Man
 
 ## Blog Posts
 
-- [How We Solved Linux Access Control for a Bank Using Red Hat IDM and Active Directory Trust](blog-idm-ad-trust-rbi-compliance)
+- [How We Solved Linux Access Control for a Bank Using Red Hat IDM and Active Directory Trust](blog-idm-ad-trust-compliance)
 
 ## Resources
 
@@ -31,3 +31,4 @@ Welcome to the documentation and resources for implementing Red Hat Identity Man
 - [Kerberos Trust Flow Slide](slide-kerberos-trust-flow.html) - How IDM and AD communicate
 - [Authentication Flow Slide](slide-authentication-flow.html) - How AD users login to Linux
 - [Authorization Flow Slide](slide-authorization-flow.html) - What AD users can do on Linux
+- [Group Chain Slide](slide-group-chain.html) - How AD groups map to IDM rules

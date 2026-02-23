@@ -1,5 +1,5 @@
 # IDM-AD Integration Demo Script
-## Indusind Bank - RBI Compliance RBAC Demo
+## Enterprise Compliance RBAC Demo
 
 ---
 
@@ -168,9 +168,9 @@ exit
 
 ---
 
-# DEMO 3: Audit Logs - RBI Compliance Win! (5 min) ⭐
+# DEMO 3: Audit Logs - Compliance Win! (5 min) ⭐
 
-**This is the MOST IMPORTANT demo for RBI compliance!**
+**This is the MOST IMPORTANT demo for compliance!**
 
 ```bash
 ssh azureuser@20.51.158.128
@@ -204,7 +204,7 @@ mike.l3@ad.demo.local : COMMAND=/usr/bin/su -
 > - *We know jane.l2 restarted crond*  
 > - *We know mike.l3 became root*
 >
-> *Compare this to your current state where logs just show 'Unix admin'. Now every action is traceable to an individual - exactly what RBI requires!"*
+> *Compare this to your current state where logs just show 'Unix admin'. Now every action is traceable to an individual - exactly what auditors require!"*
 
 ```bash
 exit
@@ -287,7 +287,7 @@ sudo ipactl status
 >
 > 5. **High Availability** - No single point of failure
 >
-> *This directly addresses your RBI audit requirements for:*
+> *This directly addresses your audit requirements for:*
 > - *Individual traceability*
 > - *Role-based access control*  
 > - *Audit logs showing who did what*

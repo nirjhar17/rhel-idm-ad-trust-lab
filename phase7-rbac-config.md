@@ -2,7 +2,7 @@
 
 ## 🎯 What Are We Doing in This Phase?
 
-This is the **most important phase for RBI compliance**! We're setting up:
+This is the **most important phase for compliance**! We're setting up:
 
 1. **Sudo Rules**: Control what commands users can run with elevated privileges
 2. **HBAC Rules**: Control which users can access which servers
@@ -656,7 +656,7 @@ After completing this phase, you now understand:
 2. **Sudo Rules**: Control what commands users can run
 3. **HBAC Rules**: Control which servers users can access
 4. **Run-As**: Commands run as root but are logged as the actual user
-5. **Why this matters for RBI**: Individual accountability + role-based access
+5. **Why this matters for compliance**: Individual accountability + role-based access
 
 ---
 

@@ -1,7 +1,7 @@
 # Red Hat IDM + Active Directory Integration Lab in Azure
 
 ## Purpose
-Demo environment for Indusind Bank - RBI Compliance RBAC Implementation
+Demo environment for Enterprise RBAC Implementation with AD Trust
 
 ## Lab Architecture
 
@@ -89,7 +89,7 @@ AzureCloud         xxxxx-xxxxx     True         your-sub     Enabled  xxxxx-xxxx
 az group create \
   --name idm-ad-demo-rg \
   --location eastus \
-  --tags "Project=IDM-AD-Demo" "Purpose=Indusind-Bank-Demo"
+  --tags "Project=IDM-AD-Demo" "Purpose=Enterprise-RBAC-Demo"
 ```
 
 **Expected Output:**

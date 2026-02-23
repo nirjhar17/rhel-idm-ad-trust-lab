@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDM-AD Demo Cheatsheet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d0d0d;
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #cc0000;
+        }
+        
+        h2 {
+            color: #cc0000;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #cc0000;
+        }
+        
+        .card h3 {
+            color: #cc0000;
+            font-size: 1em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 8px 12px;
+            border-bottom: 1px solid #333;
+        }
+        
+        th {
+            color: #888;
+            font-weight: normal;
+            font-size: 0.85em;
+        }
+        
+        .copyable {
+            background: #2a2a2a;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            cursor: pointer;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        
+        .copyable:hover {
+            background: #cc0000;
+            color: white;
+        }
+        
+        .copyable:active {
+            background: #990000;
+        }
+        
+        .command-block {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-left: 4px solid #cc0000;
+        }
+        
+        .command-block .label {
+            color: #888;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+        }
+        
+        .command-block code {
+            display: block;
+            background: #2a2a2a;
+            padding: 12px 15px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .command-block code:hover {
+            background: #3a3a3a;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            background: #cc0000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .note {
+            background: #2a2a1a;
+            border-left: 4px solid #aaaa00;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #cccc88;
+        }
+        
+        .success {
+            color: #44aa44;
+        }
+        
+        .denied {
+            color: #cc4444;
+        }
+        
+        .user-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin-right: 5px;
+        }
+        
+        .l1 { background: #1a3a5c; color: #6a9acc; }
+        .l2 { background: #3a2a1a; color: #cc9944; }
+        .l3 { background: #3a1a1a; color: #cc4444; }
+        
+        .copied-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #44aa44;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: none;
+            z-index: 1000;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IDM-AD Demo Cheatsheet</h1>
+        
+        <!-- Quick Reference Cards -->
+        <div class="grid">
+            <div class="card">
+                <h3>Server IPs</h3>
+                <table>
+                    <tr>
+                        <th>Server</th>
+                        <th>Public IP</th>
+                    </tr>
+                    <tr>
+                        <td>RHEL Client (Demo here)</td>
+                        <td><span class="copyable" onclick="copyText('20.51.158.128')">20.51.158.128</span></td>
+                    </tr>
+                    <tr>
+                        <td>IDM Primary</td>
+                        <td><span class="copyable" onclick="copyText('172.190.242.84')">172.190.242.84</span></td>
+                    </tr>
+                    <tr>
+                        <td>IDM Replica</td>
+                        <td><span class="copyable" onclick="copyText('20.42.110.153')">20.42.110.153</span></td>
+                    </tr>
+                    <tr>
+                        <td>AD DC</td>
+                        <td><span class="copyable" onclick="copyText('172.203.152.176')">172.203.152.176</span></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h3>Credentials</h3>
+                <table>
+                    <tr>
+                        <th>Account</th>
+                        <th>Password</th>
+                    </tr>
+                    <tr>
+                        <td>AD Users (john, jane, mike)</td>
+                        <td><span class="copyable" onclick="copyText('Demo@2026!')">Demo@2026!</span></td>
+                    </tr>
+                    <tr>
+                        <td>IDM Admin / Azure / Others</td>
+                        <td><span class="copyable" onclick="copyText('RedHat@123456!')">RedHat@123456!</span></td>
+                    </tr>
+                    <tr>
+                        <td>IDM Admin User</td>
+                        <td><span class="copyable" onclick="copyText('admin')">admin</span></td>
+                    </tr>
+                    <tr>
+                        <td>Azure SSH User</td>
+                        <td><span class="copyable" onclick="copyText('azureuser')">azureuser</span></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h3>Demo Users</h3>
+                <table>
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                    </tr>
+                    <tr>
+                        <td><span class="user-badge l1">L1</span><span class="copyable" onclick="copyText('john.l1@ad.demo.local')">john.l1@ad.demo.local</span></td>
+                        <td>View Only</td>
+                    </tr>
+                    <tr>
+                        <td><span class="user-badge l2">L2</span><span class="copyable" onclick="copyText('jane.l2@ad.demo.local')">jane.l2@ad.demo.local</span></td>
+                        <td>Service Admin</td>
+                    </tr>
+                    <tr>
+                        <td><span class="user-badge l3">L3</span><span class="copyable" onclick="copyText('mike.l3@ad.demo.local')">mike.l3@ad.demo.local</span></td>
+                        <td>Full Access</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h3>Web UIs</h3>
+                <table>
+                    <tr>
+                        <td>IDM Web UI</td>
+                        <td><span class="copyable" onclick="copyText('https://172.190.242.84/ipa/ui/')">https://172.190.242.84/ipa/ui/</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- DEMO 1: Web UI -->
+        <div class="section">
+            <div class="section-title">DEMO 1: IDM Web UI - Show Rules & Trust (5 min)</div>
+            
+            <div class="note">Login: admin / RedHat@123456! (IDM password unchanged)</div>
+            
+            <h2>Navigate to show:</h2>
+            <div class="command-block">
+                <div class="label">1. Sudo Rules → Policy → Sudo → Sudo Rules</div>
+                <code>sudo_l1_operators → Shows: l1_view_commands only
+sudo_l2_admins → Shows: l1 + l2_admin_commands  
+sudo_l3_superadmins → Shows: Command Category = ALL</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">2. HBAC Rules → Policy → Host-Based Access Control</div>
+                <code>hbac_l1_operators → Shows: linux_l1_operators can access all hosts
+hbac_l2_admins → Shows: linux_l2_admins can access all hosts
+hbac_l3_superadmins → Shows: linux_l3_superadmins can access all hosts</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">3. AD Trust → IPA Server → Trusts → Click "ad.demo.local" → "Trusted domains" tab</div>
+                <code>Domain name: ad.demo.local
+Status: ✓ Enabled  ← THIS CONFIRMS TRUST IS WORKING
+Domain NetBIOS name: ADDEMO
+Domain Security Identifier: S-1-5-21-...</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">4. Global Trust Config → IPA Server → Trusts (top level)</div>
+                <code>Shows both IDM servers as trust controllers:
+- idm.idm.demo.local
+- idm2.idm.demo.local (HA!)</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">5. Groups → Identity → Groups</div>
+                <code>External Groups: ad_linux_l1_team, ad_linux_l2_team, ad_linux_l3_team
+POSIX Groups: linux_l1_operators, linux_l2_admins, linux_l3_superadmins</code>
+            </div>
+        </div>
+        
+        <!-- DEMO 2: SSH Login -->
+        <div class="section">
+            <div class="section-title">DEMO 2: SSH Login - L1 Operator (5 min)</div>
+            
+            <div class="command-block">
+                <div class="label">SSH as L1 user (John) → Password: <span class="copyable" onclick="copyText('Demo@2026!'); event.stopPropagation();">Demo@2026!</span></div>
+                <code onclick="copyText('ssh john.l1@ad.demo.local@20.51.158.128')">ssh john.l1@ad.demo.local@20.51.158.128</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Check identity</div>
+                <code onclick="copyText('id')">id</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Check what commands I can run (sudo -l)</div>
+                <code onclick="copyText('sudo -l')">sudo -l</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✓ ALLOWED - View service status</div>
+                <code onclick="copyText('sudo systemctl status sshd')">sudo systemctl status sshd</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✓ ALLOWED - Check disk space</div>
+                <code onclick="copyText('sudo df -h')">sudo df -h</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✓ ALLOWED - Check memory</div>
+                <code onclick="copyText('sudo free -m')">sudo free -m</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✗ DENIED - Restart service</div>
+                <code onclick="copyText('sudo systemctl restart sshd')">sudo systemctl restart sshd</code>
+            </div>
+            
+            <div class="note">Say: "L1 operator can VIEW but cannot CHANGE anything"</div>
+            
+            <div class="command-block">
+                <div class="label">Exit L1 session</div>
+                <code onclick="copyText('exit')">exit</code>
+            </div>
+        </div>
+        
+        <!-- DEMO 3: L2 Admin -->
+        <div class="section">
+            <div class="section-title">DEMO 3: SSH Login - L2 Admin (3 min)</div>
+            
+            <div class="command-block">
+                <div class="label">SSH as L2 user (Jane) → Password: <span class="copyable" onclick="copyText('Demo@2026!'); event.stopPropagation();">Demo@2026!</span></div>
+                <code onclick="copyText('ssh jane.l2@ad.demo.local@20.51.158.128')">ssh jane.l2@ad.demo.local@20.51.158.128</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Check identity and allowed commands</div>
+                <code onclick="copyText('id && sudo -l')">id && sudo -l</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✓ ALLOWED - Restart service (L2 can do this)</div>
+                <code onclick="copyText('sudo systemctl restart sshd')">sudo systemctl restart sshd</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✗ DENIED - Full root access</div>
+                <code onclick="copyText('sudo su -')">sudo su -</code>
+            </div>
+            
+            <div class="note">Say: "L2 can restart services but cannot become root"</div>
+            
+            <div class="command-block">
+                <div class="label">Exit L2 session</div>
+                <code onclick="copyText('exit')">exit</code>
+            </div>
+        </div>
+        
+        <!-- DEMO 4: L3 Super Admin -->
+        <div class="section">
+            <div class="section-title">DEMO 4: SSH Login - L3 Super Admin (2 min)</div>
+            
+            <div class="command-block">
+                <div class="label">SSH as L3 user (Mike) → Password: <span class="copyable" onclick="copyText('Demo@2026!'); event.stopPropagation();">Demo@2026!</span></div>
+                <code onclick="copyText('ssh mike.l3@ad.demo.local@20.51.158.128')">ssh mike.l3@ad.demo.local@20.51.158.128</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Check identity and allowed commands (shows ALL)</div>
+                <code onclick="copyText('id && sudo -l')">id && sudo -l</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✓ ALLOWED - Full root access</div>
+                <code onclick="copyText('sudo su -')">sudo su -</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Show we are root</div>
+                <code onclick="copyText('whoami')">whoami</code>
+            </div>
+            
+            <div class="note">Say: "L3 has full access, but we still know it was Mike who became root"</div>
+            
+            <div class="command-block">
+                <div class="label">Exit root and L3 session</div>
+                <code onclick="copyText('exit')">exit</code>
+            </div>
+        </div>
+        
+        <!-- DEMO 5: Audit Logs -->
+        <div class="section">
+            <div class="section-title">DEMO 5: Show Audit Logs (3 min)</div>
+            
+            <div class="command-block">
+                <div class="label">SSH as azureuser first → Password: <span class="copyable" onclick="copyText('RedHat@123456!'); event.stopPropagation();">RedHat@123456!</span></div>
+                <code onclick="copyText('ssh azureuser@20.51.158.128')">ssh azureuser@20.51.158.128</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Show recent sudo logs</div>
+                <code onclick="copyText('sudo grep -E \"(john|jane|mike)\" /var/log/secure | tail -20')">sudo grep -E "(john|jane|mike)" /var/log/secure | tail -20</code>
+            </div>
+            
+            <div class="note">Say: "Every action is logged with individual username - this is what auditors want"</div>
+        </div>
+        
+        <!-- DEMO 6: HA Failover -->
+        <div class="section">
+            <div class="section-title">DEMO 6: High Availability (Optional - 5 min)</div>
+            
+            <div class="command-block">
+                <div class="label">SSH as L1 (John) first → Password: <span class="copyable" onclick="copyText('Demo@2026!'); event.stopPropagation();">Demo@2026!</span></div>
+                <code onclick="copyText('ssh john.l1@ad.demo.local@20.51.158.128')">ssh john.l1@ad.demo.local@20.51.158.128</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✗ DENIED - L1 cannot check IDM server status</div>
+                <code onclick="copyText('sudo sssctl domain-status idm.demo.local')">sudo sssctl domain-status idm.demo.local</code>
+            </div>
+            
+            <div class="note">Say: "L1 doesn't have permission to check system configuration"</div>
+            
+            <div class="command-block">
+                <div class="label">Exit John, SSH as L3 (Mike) → Password: <span class="copyable" onclick="copyText('Demo@2026!'); event.stopPropagation();">Demo@2026!</span></div>
+                <code onclick="copyText('exit && ssh mike.l3@ad.demo.local@20.51.158.128')">exit && ssh mike.l3@ad.demo.local@20.51.158.128</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">✓ ALLOWED - Only L3 can check system status</div>
+                <code onclick="copyText('sudo sssctl domain-status idm.demo.local')">sudo sssctl domain-status idm.demo.local</code>
+            </div>
+            
+            <div class="note">Should show: Active servers: IPA: idm.idm.demo.local (primary)</div>
+            
+            <div class="command-block">
+                <div class="label">SSH to IDM Primary → Password: <span class="copyable" onclick="copyText('RedHat@123456!'); event.stopPropagation();">RedHat@123456!</span></div>
+                <code onclick="copyText('ssh azureuser@172.190.242.84')">ssh azureuser@172.190.242.84</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Stop IDM services</div>
+                <code onclick="copyText('sudo ipactl stop')">sudo ipactl stop</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Exit IDM server</div>
+                <code onclick="copyText('exit')">exit</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Now login as AD user (still works via replica!) → Password: <span class="copyable" onclick="copyText('Demo@2026!'); event.stopPropagation();">Demo@2026!</span></div>
+                <code onclick="copyText('ssh john.l1@ad.demo.local@20.51.158.128')">ssh john.l1@ad.demo.local@20.51.158.128</code>
+            </div>
+            
+            <div class="note">Say: "Primary is down, but login still works because SSSD fails over to replica"</div>
+            
+            <div class="command-block">
+                <div class="label">Exit John, SSH as L2 (Jane) to check server status → Password: <span class="copyable" onclick="copyText('Demo@2026!'); event.stopPropagation();">Demo@2026!</span></div>
+                <code onclick="copyText('exit && ssh jane.l2@ad.demo.local@20.51.158.128')">exit && ssh jane.l2@ad.demo.local@20.51.158.128</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Check which server is now active (Jane can do this)</div>
+                <code onclick="copyText('sudo sssctl domain-status idm.demo.local')">sudo sssctl domain-status idm.demo.local</code>
+            </div>
+            
+            <div class="note">Should now show: Active servers: IPA: idm2.idm.demo.local (replica!) - Failover worked!</div>
+            
+            <div class="command-block">
+                <div class="label">DON'T FORGET: Restart IDM services after demo</div>
+                <code onclick="copyText('ssh azureuser@172.190.242.84 \"sudo ipactl start\"')">ssh azureuser@172.190.242.84 "sudo ipactl start"</code>
+            </div>
+        </div>
+        
+        <!-- Troubleshooting -->
+        <div class="section">
+            <div class="section-title">Troubleshooting Commands</div>
+            
+            <div class="command-block">
+                <div class="label">Clear SSSD cache (if login issues)</div>
+                <code onclick="copyText('sudo sss_cache -E && sudo systemctl restart sssd')">sudo sss_cache -E && sudo systemctl restart sssd</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Check SSSD status</div>
+                <code onclick="copyText('sudo systemctl status sssd')">sudo systemctl status sssd</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Test HBAC access</div>
+                <code onclick="copyText('ipa hbactest --user=john.l1@ad.demo.local --host=rhel-client.idm.demo.local --service=sshd')">ipa hbactest --user=john.l1@ad.demo.local --host=rhel-client.idm.demo.local --service=sshd</code>
+            </div>
+            
+            <div class="command-block">
+                <div class="label">Start IDM services (if down)</div>
+                <code onclick="copyText('sudo ipactl start')">sudo ipactl start</code>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast notification -->
+    <div class="copied-toast" id="toast">Copied!</div>
+    
+    <script>
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(function() {
+                    toast.style.display = 'none';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>

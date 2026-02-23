@@ -368,7 +368,7 @@ You should see: `/home/john.l1@ad.demo.local`
 cat > /etc/issue.net << 'EOF'
 ************************************************************
 *                                                          *
-*  INDUSIND BANK - AUTHORIZED ACCESS ONLY                  *
+*  ENTERPRISE - AUTHORIZED ACCESS ONLY                     *
 *                                                          *
 *  This system is managed by Red Hat Identity Management   *
 *  All actions are logged and monitored                    *

@@ -4,14 +4,14 @@
 
 **The Bank's Problem:**
 ```
-Currently at Indusind Bank:
+Current State:
 ┌─────────────────────────────────────────────────────────────┐
 │                                                              │
 │   1500 Linux Servers                                        │
 │                                                              │
 │   All 50 admins login as:  ──►  unixadmin (shared account)  │
 │                                                              │
-│   RBI Auditor asks: "Who deleted the database?"             │
+│   Auditor asks: "Who deleted the database?"                 │
 │   Answer: "We don't know... could be any of 50 people" 😱   │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
@@ -29,7 +29,7 @@ After our solution:
 │   - jane.l2@ad.demo.local                                   │
 │   - mike.l3@ad.demo.local                                   │
 │                                                              │
-│   RBI Auditor asks: "Who deleted the database?"             │
+│   Auditor asks: "Who deleted the database?"                 │
 │   Answer: "john.l1 at 3:45 PM from IP 10.0.1.100" ✅       │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
@@ -454,7 +454,7 @@ US Office (AD):
 - Has team: "US_Engineering"
 - Uses Employee IDs starting with "US-"
 
-India Office (IDM):
+Regional Office (IDM):
 - Needs to give access to US_Engineering team
 - But can't read US IDs directly!
 
@@ -719,7 +719,7 @@ Let's trace what happens when john.l1 tries to SSH into a Linux server:
 │  Manual rule on each server           Centralized rules in IDM          │
 │  1500 servers = nightmare             1500 servers = same effort        │
 │                                                                          │
-│  RBI COMPLIANCE: ❌ FAIL              RBI COMPLIANCE: ✅ PASS           │
+│  COMPLIANCE: ❌ FAIL                  COMPLIANCE: ✅ PASS               │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
