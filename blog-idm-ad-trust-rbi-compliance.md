@@ -55,6 +55,40 @@ Here is what each component does in the chain.
 
 This chain is important because it shows there is no direct connection between the Linux server and AD. SSSD always goes through IDM, which means IDM controls what the user can do even though AD authenticates who they are.
 
+## How Authorization Works
+
+Authentication answers "Who are you?" but authorization answers "What can you do?" This is a critical distinction. AD handles authentication (verifying the password), but IDM handles authorization (controlling access).
+
+After a user is authenticated, two checks happen.
+
+The first check is HBAC (Host-Based Access Control). This determines which servers a user can access. When John tries to SSH into a production server, SSSD asks IDM: "Is John allowed on this server?" IDM checks the HBAC rules. If John is an L1 operator and the rule says L1 users can only access monitoring servers, the connection is denied before John even gets a shell.
+
+The second check is Sudo Rules. This determines what commands a user can run with elevated privileges. Even if John is allowed on a server, he might not be allowed to run certain commands. When John runs "sudo systemctl restart httpd", the sudo service asks SSSD, which asks IDM: "Can John run this command?" If the rule says L1 users can only run "systemctl status" commands, the restart is denied.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  AUTHENTICATION (Who are you?)                                  │
+│                                                                 │
+│  User → PAM → SSSD → IDM → AD                                  │
+│                              ↓                                  │
+│                         "Password OK"                           │
+└─────────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────────┐
+│  AUTHORIZATION (What can you do?)                               │
+│                                                                 │
+│  SSSD asks IDM:                                                 │
+│    1. HBAC: "Can John access this server?" → Yes/No            │
+│    2. Sudo: "Can John run this command?" → Yes/No              │
+│                                                                 │
+│  IDM decides based on:                                          │
+│    - Which group John belongs to (L1/L2/L3)                    │
+│    - Rules configured for that group                            │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+This separation is powerful for compliance. The AD team manages user accounts (hiring, firing, role changes). The Linux security team manages access policies in IDM. Neither team needs to touch the other's system. This clean separation of duties is exactly what RBI auditors want to see.
+
 Here is how it works at a high level.
 
 Active Directory remains the source of truth for user identities. Users keep their existing AD accounts and passwords. Nothing changes on the Windows side.
