@@ -1,3 +1,8 @@
+---
+layout: default
+title: How We Solved Linux Access Control for a Bank Using Red Hat IDM and Active Directory Trust
+---
+
 # How We Solved Linux Access Control for a Bank Using Red Hat IDM and Active Directory Trust
 
 Imagine this scenario. You are the IT security head at a bank with 1,500 Linux servers. An RBI auditor asks you a simple question: "Who deleted the production database last Tuesday at 3:45 PM?"
