@@ -29,3 +29,4 @@ Welcome to the documentation and resources for implementing Red Hat Identity Man
 ## Presentations
 
 - [Authentication Flow Slide](slide-authentication-flow.html)
+- [Authorization Flow Slide](slide-authorization-flow.html)
