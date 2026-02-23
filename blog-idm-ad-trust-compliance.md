@@ -1,9 +1,9 @@
 ---
 layout: default
-title: How We Solved Linux Access Control for a Bank Using Red Hat IDM and Active Directory Trust
+title: Red Hat IDM + Active Directory Trust: Complete Guide for Linux Access Control
 ---
 
-# How We Solved Linux Access Control for a Bank Using Red Hat IDM and Active Directory Trust
+# Red Hat IDM + Active Directory Trust: Complete Guide for Linux Access Control
 
 Imagine this scenario. You are the IT security head at a bank with 1,500 Linux servers. An auditor asks you a simple question: "Who deleted the production database last Tuesday at 3:45 PM?"
 
@@ -186,7 +186,7 @@ Jan 06 10:20:33 server sudo: jane.l2@ad.demo.local : COMMAND=/usr/bin/systemctl 
 
 Now we can answer the auditor's question. Jane (L2) restarted httpd at 10:20. John (L1) tried but was denied. Complete accountability.
 
-## Lessons Learned
+## Things to Watch Out For
 
 DNS is critical. Kerberos authentication depends heavily on DNS. Both AD and IDM need to resolve each other's hostnames. We spent two hours debugging what turned out to be a missing DNS forwarder.
 
@@ -206,17 +206,13 @@ The solution also simplified onboarding. New team members get added to the appro
 
 ## Getting Started
 
-If you are facing similar challenges, here is how to begin.
+Ready to implement this in your environment?
 
-Start with a lab environment. We used Azure VMs to build a complete test setup with AD, IDM servers, and a Linux client. This let us make mistakes without impacting production.
+The complete lab setup, configuration scripts, and demo guides are available on GitHub:
 
-Document your access tiers. Before touching any technology, define what each support tier should and should not be able to do. Get sign-off from security and operations.
+[View the GitHub Repository](https://github.com/nirjhar17/rhel-idm-ad-trust-lab)
 
-Plan your group structure. Map out which AD groups will correspond to which Linux access levels. Keep it simple. Three or four tiers usually suffice.
-
-Test with real scenarios. Before going live, have team members from each tier try their typical tasks. Verify L1 cannot do L2 things and vice versa.
-
-The complete lab setup and demo scripts are available on GitHub. They include all the Azure CLI commands, IDM configuration, and sudo rules we used.
+The repository includes Azure infrastructure setup, IDM configuration, AD trust setup, and all the sudo/HBAC rules used in this guide.
 
 ## Conclusion
 

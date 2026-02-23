@@ -8,7 +8,7 @@ Welcome to the documentation and resources for implementing Red Hat Identity Man
 
 ## Blog Posts
 
-- [How We Solved Linux Access Control for a Bank Using Red Hat IDM and Active Directory Trust](blog-idm-ad-trust-compliance)
+- [Red Hat IDM + Active Directory Trust: Complete Guide for Linux Access Control](blog-idm-ad-trust-compliance)
 
 ## Resources
 
