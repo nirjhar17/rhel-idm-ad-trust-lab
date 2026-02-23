@@ -111,11 +111,6 @@
             border-color: #cc0000;
         }
         
-        .domain-box .icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        
         .domain-box .name {
             color: white;
             font-size: 1.1em;
@@ -179,15 +174,14 @@
         .login-flow {
             display: flex;
             align-items: flex-start;
-            justify-content: space-between;
-            gap: 15px;
+            gap: 20px;
         }
         
-        .flow-column {
+        .flow-left {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            padding-top: 10px;
         }
         
         .flow-entity {
@@ -228,12 +222,11 @@
             font-weight: 600;
         }
         
-        .flow-steps {
+        .flow-middle {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 0 10px;
+            gap: 6px;
         }
         
         .flow-step {
@@ -261,8 +254,9 @@
         
         .flow-step .direction {
             color: #666;
-            font-size: 0.9em;
+            font-size: 0.85em;
             flex-shrink: 0;
+            min-width: 100px;
         }
         
         .flow-step .desc {
@@ -291,6 +285,40 @@
             background: #1a3a1a;
             border-color: #4ade80;
             color: #4ade80;
+        }
+        
+        .flow-right {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            width: 120px;
+        }
+        
+        .flow-right-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-left: 2px solid #333;
+        }
+        
+        .flow-right-section.ad-section {
+            height: 160px;
+            border-color: #0066cc;
+            background: linear-gradient(90deg, rgba(0,102,204,0.1) 0%, transparent 100%);
+        }
+        
+        .flow-right-section.idm-section {
+            height: 80px;
+            border-color: #cc0000;
+            background: linear-gradient(90deg, rgba(204,0,0,0.1) 0%, transparent 100%);
+        }
+        
+        .flow-right-section.linux-section {
+            height: 80px;
+            border-color: #f59e0b;
+            background: linear-gradient(90deg, rgba(245,158,11,0.1) 0%, transparent 100%);
         }
         
         .key-insight {
@@ -393,14 +421,15 @@
             </div>
             
             <div class="login-flow">
-                <div class="flow-column">
+                <div class="flow-left">
                     <div class="flow-entity user">
                         <div class="label">AD User</div>
                         <div class="name">john.l1</div>
                     </div>
                 </div>
                 
-                <div class="flow-steps">
+                <div class="flow-middle">
+                    <!-- AD Steps 1-4 -->
                     <div class="flow-step">
                         <span class="num">1</span>
                         <span class="direction">User → AD</span>
@@ -423,6 +452,7 @@
                         <span class="desc">Issue referral (Linux is in IDM realm)</span>
                         <span class="ticket referral">Referral</span>
                     </div>
+                    <!-- IDM Steps 5-6 -->
                     <div class="flow-step">
                         <span class="num">5</span>
                         <span class="direction">User → IDM</span>
@@ -435,6 +465,7 @@
                         <span class="desc">Validate & issue service ticket</span>
                         <span class="ticket service">Service</span>
                     </div>
+                    <!-- Linux Steps 7-8 -->
                     <div class="flow-step">
                         <span class="num">7</span>
                         <span class="direction">User → Linux</span>
@@ -448,18 +479,24 @@
                     </div>
                 </div>
                 
-                <div class="flow-column" style="gap: 20px;">
-                    <div class="flow-entity ad">
-                        <div class="label">AD KDC</div>
-                        <div class="name">AD</div>
+                <div class="flow-right">
+                    <div class="flow-right-section ad-section">
+                        <div class="flow-entity ad">
+                            <div class="label">Steps 1-4</div>
+                            <div class="name">AD KDC</div>
+                        </div>
                     </div>
-                    <div class="flow-entity idm">
-                        <div class="label">IDM KDC</div>
-                        <div class="name">IDM</div>
+                    <div class="flow-right-section idm-section">
+                        <div class="flow-entity idm">
+                            <div class="label">Steps 5-6</div>
+                            <div class="name">IDM KDC</div>
+                        </div>
                     </div>
-                    <div class="flow-entity linux">
-                        <div class="label">Target</div>
-                        <div class="name">Linux</div>
+                    <div class="flow-right-section linux-section">
+                        <div class="flow-entity linux">
+                            <div class="label">Steps 7-8</div>
+                            <div class="name">Linux</div>
+                        </div>
                     </div>
                 </div>
             </div>
