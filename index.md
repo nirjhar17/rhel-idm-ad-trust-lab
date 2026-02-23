@@ -28,5 +28,6 @@ Welcome to the documentation and resources for implementing Red Hat Identity Man
 
 ## Presentations
 
-- [Authentication Flow Slide](slide-authentication-flow.html)
-- [Authorization Flow Slide](slide-authorization-flow.html)
+- [Kerberos Trust Flow Slide](slide-kerberos-trust-flow.html) - How IDM and AD communicate
+- [Authentication Flow Slide](slide-authentication-flow.html) - How AD users login to Linux
+- [Authorization Flow Slide](slide-authorization-flow.html) - What AD users can do on Linux
